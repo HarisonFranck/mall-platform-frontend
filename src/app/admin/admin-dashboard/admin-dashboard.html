@@ -1,1 +1,68 @@
-<p>Le tableau de bord admin fonctionne !</p>
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>Tableau de bord</h1>
+        <p>Bienvenue dans votre centre de gestion du centre commercial.</p>
+    </div>
+
+    <div class="stats-grid">
+        <mat-card *ngFor="let stat of stats" class="stat-card">
+            <mat-card-content>
+                <div class="stat-content">
+                    <div class="stat-info">
+                        <span class="stat-label">{{ stat.label }}</span>
+                        <span class="stat-value">{{ stat.value }}</span>
+                    </div>
+                    <div class="stat-icon-wrapper" [style.background-color]="stat.color + '20'">
+                        <mat-icon [style.color]="stat.color">{{ stat.icon }}</mat-icon>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <div class="dashboard-sections">
+        <mat-card class="recent-activities">
+            <mat-card-header>
+                <mat-card-title>Activités récentes</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-list>
+                    <mat-list-item>
+                        <mat-icon matListItemIcon color="primary">add_business</mat-icon>
+                        <div matListItemTitle>Nouvelle boutique : "L'Artisan Boulanger"</div>
+                        <div matListItemLine>Il y a 2 heures</div>
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                    <mat-list-item>
+                        <mat-icon matListItemIcon color="accent">event_note</mat-icon>
+                        <div matListItemTitle>Événement mis à jour : "Soldes d'été"</div>
+                        <div matListItemLine>Hier à 16:45</div>
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                    <mat-list-item>
+                        <mat-icon matListItemIcon color="warn">report_problem</mat-icon>
+                        <div matListItemTitle>Maintenance prévue : Parking Zone B</div>
+                        <div matListItemLine>20 Février 2026</div>
+                    </mat-list-item>
+                </mat-list>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="quick-actions">
+            <mat-card-header>
+                <mat-card-title>Actions rapides</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="actions-content">
+                <button mat-flat-button color="primary" class="action-btn">
+                    <mat-icon>add</mat-icon> Ajouter une boutique
+                </button>
+                <button mat-flat-button color="accent" class="action-btn">
+                    <mat-icon>event</mat-icon> Créer un événement
+                </button>
+                <button mat-flat-button class="action-btn">
+                    <mat-icon>description</mat-icon> Générer un rapport
+                </button>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

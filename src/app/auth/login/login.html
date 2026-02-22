@@ -29,7 +29,7 @@
 
             <div class="form-actions">
                 <mat-checkbox formControlName="rememberMe" color="primary">Se souvenir de moi</mat-checkbox>
-                <a href="#" class="forgot-password">Mot de passe oublié ?</a>
+                <a routerLink="/auth/forgot-password" class="forgot-password">Mot de passe oublié ?</a>
             </div>
 
             <button mat-flat-button color="primary" type="submit" [disabled]="loginForm.invalid" class="submit-button">

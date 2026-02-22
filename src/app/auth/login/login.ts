@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -18,6 +19,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatButtonModule,
     MatIconModule,
     MatCheckboxModule,
+    RouterLink
   ],
   templateUrl: './login.html',
   styleUrl: './login.css',
@@ -49,6 +51,11 @@ export class Login {
   onSubmit() {
     if (this.loginForm.valid) {
       console.log('Logique de connexion ici', this.loginForm.value);
+      const email = this.loginForm.get('email')?.value;
+      const password = this.loginForm.get('password')?.value;
+      const rememberMe = this.loginForm.get('rememberMe')?.value;
+      if (email != null && email != "" && password)
+        console.log(email, password, rememberMe);
     }
   }
 }

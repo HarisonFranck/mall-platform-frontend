@@ -1,0 +1,42 @@
+.management-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.management-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.management-header h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 500;
+}
+
+.table-card {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+.full-width-table {
+    width: 100%;
+}
+
+.status-open {
+    background-color: #e8f5e9 !important;
+    color: #2e7d32 !important;
+}
+
+.status-closed {
+    background-color: #ffebee !important;
+    color: #c62828 !important;
+}
+
+th.mat-mdc-header-cell {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}

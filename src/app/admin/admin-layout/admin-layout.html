@@ -1,1 +1,50 @@
-<p>Le layout admin fonctionne !</p>
+<mat-sidenav-container class="admin-container">
+    <mat-sidenav #sidenav mode="side" [opened]="isSidenavOpen" class="admin-sidenav">
+        <div class="sidenav-header">
+            <mat-icon class="brand-icon">shopping_bag</mat-icon>
+            <span>Mall Admin</span>
+        </div>
+
+        <mat-nav-list>
+            <a mat-list-item routerLink="/admin/dashboard" routerLinkActive="active-link">
+                <mat-icon matListItemIcon>dashboard</mat-icon>
+                <span matListItemTitle>Tableau de bord</span>
+            </a>
+            <a mat-list-item routerLink="/admin/shops" routerLinkActive="active-link">
+                <mat-icon matListItemIcon>store</mat-icon>
+                <span matListItemTitle>Gestion des boutiques</span>
+            </a>
+            <a mat-list-item routerLink="/admin/events" routerLinkActive="active-link">
+                <mat-icon matListItemIcon>event</mat-icon>
+                <span matListItemTitle>Gestion des événements</span>
+            </a>
+        </mat-nav-list>
+
+        <div class="sidenav-footer">
+            <a mat-list-item routerLink="/auth/login">
+                <mat-icon matListItemIcon>logout</mat-icon>
+                <span matListItemTitle>Déconnexion</span>
+            </a>
+        </div>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="admin-content">
+        <mat-toolbar color="primary" class="admin-toolbar">
+            <button mat-icon-button (click)="toggleSidenav()">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <span>Mall Platform - Administration</span>
+            <span class="toolbar-spacer"></span>
+            <button mat-icon-button>
+                <mat-icon>notifications</mat-icon>
+            </button>
+            <button mat-icon-button>
+                <mat-icon>account_circle</mat-icon>
+            </button>
+        </mat-toolbar>
+
+        <main class="page-container">
+            <router-outlet></router-outlet>
+        </main>
+    </mat-sidenav-content>
+</mat-sidenav-container>
