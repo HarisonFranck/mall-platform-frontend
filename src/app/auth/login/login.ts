@@ -38,6 +38,14 @@ export class Login {
     this.hidePassword.set(!this.hidePassword());
   }
 
+  fillShortcut(email: string, password: string) {
+    this.loginForm.patchValue({
+      email: email,
+      password: password,
+      rememberMe: true
+    });
+  }
+
   onSubmit() {
     if (this.loginForm.valid) {
       console.log('Logique de connexion ici', this.loginForm.value);

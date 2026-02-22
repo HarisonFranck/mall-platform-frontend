@@ -1,0 +1,58 @@
+<div class="register-container">
+    <div class="register-card">
+        <div class="register-brand">
+            <mat-icon class="brand-icon">shopping_bag</mat-icon>
+            <h1>Mall Platform</h1>
+            <h2>Créer un compte</h2>
+        </div>
+
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Nom complet</mat-label>
+                <input matInput formControlName="name" placeholder="Ex. Jean Dupont" />
+                <mat-icon matSuffix>person</mat-icon>
+                <mat-error *ngIf="registerForm.get('name')?.hasError('required')">Le nom est requis</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" formControlName="email" placeholder="Ex. utilisateur@exemple.com" />
+                <mat-icon matSuffix>email</mat-icon>
+                <mat-error *ngIf="registerForm.get('email')?.hasError('required')">L'e-mail est requis</mat-error>
+                <mat-error *ngIf="registerForm.get('email')?.hasError('email')">Adresse e-mail invalide</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Mot de passe</mat-label>
+                <input matInput [type]="hidePassword() ? 'password' : 'text'" formControlName="password" />
+                <button mat-icon-button matSuffix (click)="togglePasswordVisibility(); $event.preventDefault()">
+                    <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+                <mat-error *ngIf="registerForm.get('password')?.hasError('required')">Le mot de passe est
+                    requis</mat-error>
+                <mat-error *ngIf="registerForm.get('password')?.hasError('minlength')">Le mot de passe doit comporter au
+                    moins 6 caractères</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Confirmer le mot de passe</mat-label>
+                <input matInput [type]="hideConfirmPassword() ? 'password' : 'text'"
+                    formControlName="confirmPassword" />
+                <button mat-icon-button matSuffix (click)="toggleConfirmPasswordVisibility(); $event.preventDefault()">
+                    <mat-icon>{{ hideConfirmPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+                <mat-error *ngIf="registerForm.hasError('mismatch') && registerForm.get('confirmPassword')?.touched">Les
+                    mots de passe ne correspondent pas</mat-error>
+            </mat-form-field>
+
+            <button mat-flat-button color="primary" type="submit" [disabled]="registerForm.invalid"
+                class="submit-button">
+                S'inscrire
+            </button>
+        </form>
+
+        <div class="register-footer">
+            Vous avez déjà un compte ? <a routerLink="/auth/login">Se connecter</a>
+        </div>
+    </div>
+</div>

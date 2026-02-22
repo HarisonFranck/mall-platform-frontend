@@ -1,0 +1,93 @@
+.register-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #f0f7ff 0%, #e0efff 100%);
+    font-family: 'Roboto', sans-serif;
+}
+
+.register-card {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+}
+
+.register-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.brand-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: var(--mat-sys-primary);
+    margin-bottom: 12px;
+}
+
+.register-brand h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+.register-brand h2 {
+    margin: 8px 0 0;
+    font-size: 18px;
+    font-weight: 400;
+    color: #666;
+}
+
+.register-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.submit-button {
+    height: 48px;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 8px;
+    margin-top: 16px;
+}
+
+.register-footer {
+    margin-top: 24px;
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+}
+
+.register-footer a {
+    color: var(--mat-sys-primary);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.register-footer a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+    .register-card {
+        padding: 24px;
+        box-shadow: none;
+        border-radius: 0;
+        height: 100vh;
+        justify-content: center;
+    }
+}

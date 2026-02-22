@@ -120,6 +120,23 @@
     height: 18px;
 }
 
+.shortcut-accounts {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.shortcut-accounts button {
+    height: 40px;
+    justify-content: flex-start;
+    text-align: left;
+    border-radius: 6px;
+}
+
+.shortcut-accounts mat-icon {
+    margin-right: 8px;
+}
+
 .login-footer {
     margin-top: 32px;
     text-align: center;
