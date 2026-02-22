@@ -1,0 +1,60 @@
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-brand">
+            <mat-icon class="brand-icon">shopping_bag</mat-icon>
+            <h1>Mall Platform</h1>
+        </div>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" formControlName="email" placeholder="Ex. utilisateur@exemple.com" />
+                <mat-icon matSuffix>email</mat-icon>
+                <mat-error *ngIf="loginForm.get('email')?.hasError('required')">L'e-mail est requis</mat-error>
+                <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Adresse e-mail invalide</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Mot de passe</mat-label>
+                <input matInput [type]="hidePassword() ? 'password' : 'text'" formControlName="password" />
+                <button mat-icon-button matSuffix (click)="togglePasswordVisibility(); $event.preventDefault()"
+                    [attr.aria-label]="'Masquer le mot de passe'" [attr.aria-pressed]="hidePassword()">
+                    <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+                <mat-error *ngIf="loginForm.get('password')?.hasError('required')">Le mot de passe est
+                    requis</mat-error>
+                <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">Le mot de passe doit comporter au
+                    moins 6 caractères</mat-error>
+            </mat-form-field>
+
+            <div class="form-actions">
+                <mat-checkbox formControlName="rememberMe" color="primary">Se souvenir de moi</mat-checkbox>
+                <a href="#" class="forgot-password">Mot de passe oublié ?</a>
+            </div>
+
+            <button mat-flat-button color="primary" type="submit" [disabled]="loginForm.invalid" class="submit-button">
+                Se connecter
+            </button>
+
+            <div class="divider">
+                <span>Se connecter avec</span>
+            </div>
+
+            <div class="social-logins">
+                <button mat-stroked-button type="button" class="social-button">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
+                        alt="Google" />
+                    Google
+                </button>
+                <button mat-stroked-button type="button" class="social-button">
+                    <mat-icon>apple</mat-icon>
+                    Apple
+                </button>
+            </div>
+        </form>
+
+        <div class="login-footer">
+            Vous n'avez pas de compte ? <a href="#">S'inscrire</a>
+        </div>
+    </div>
+</div>
