@@ -1,0 +1,112 @@
+<div class="moderation-container">
+    <div class="header-actions">
+        <h1>Supervision du contenu</h1>
+    </div>
+
+    <mat-card>
+        <mat-card-content>
+            <mat-tab-group>
+                <!-- Onglet Offres et Promotions -->
+                <mat-tab label="Offres En Attente">
+                    <div class="tab-content">
+                        <table mat-table [dataSource]="pendingOffers" class="mat-elevation-z1">
+                            <ng-container matColumnDef="title">
+                                <th mat-header-cell *matHeaderCellDef>Titre</th>
+                                <td mat-cell *matCellDef="let element">{{ element.title }}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="target">
+                                <th mat-header-cell *matHeaderCellDef>Type Cible</th>
+                                <td mat-cell *matCellDef="let element">{{ element.targetType }}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="date">
+                                <th mat-header-cell *matHeaderCellDef>Période</th>
+                                <td mat-cell *matCellDef="let element">
+                                    {{ element.startDate | date:'shortDate' }} - {{ element.endDate | date:'shortDate'
+                                    }}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="status">
+                                <th mat-header-cell *matHeaderCellDef>Statut</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <mat-chip-set>
+                                        <mat-chip color="accent">{{ element.status || 'PENDING' }}</mat-chip>
+                                    </mat-chip-set>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="actions">
+                                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <button mat-icon-button color="primary" (click)="validateOffer(element._id)"
+                                        title="Valider">
+                                        <mat-icon>check_circle</mat-icon>
+                                    </button>
+                                    <button mat-icon-button color="warn" (click)="rejectOffer(element._id)"
+                                        title="Rejeter">
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="offerColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: offerColumns;"></tr>
+                        </table>
+                        <div *ngIf="pendingOffers.length === 0" class="no-data">
+                            Aucune offre en attente.
+                        </div>
+                    </div>
+                </mat-tab>
+
+                <!-- Onglet Avis Clients -->
+                <mat-tab label="Avis Clients">
+                    <div class="tab-content">
+                        <table mat-table [dataSource]="allReviews" class="mat-elevation-z1">
+                            <ng-container matColumnDef="user">
+                                <th mat-header-cell *matHeaderCellDef>Utilisateur</th>
+                                <td mat-cell *matCellDef="let element">{{ element.user?.name || 'Inconnu' }}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="targetType">
+                                <th mat-header-cell *matHeaderCellDef>Sur</th>
+                                <td mat-cell *matCellDef="let element">{{ element.targetType }}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="comment">
+                                <th mat-header-cell *matHeaderCellDef>Commentaire</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <div class="comment-text">{{ element.comment }}</div>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="rating">
+                                <th mat-header-cell *matHeaderCellDef>Note</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <strong>{{ element.rating }}/5</strong>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="actions">
+                                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                                <td mat-cell *matCellDef="let element">
+                                    <button mat-icon-button color="warn" (click)="deleteReview(element)"
+                                        title="Supprimer l'avis">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="reviewColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: reviewColumns;"></tr>
+                        </table>
+                        <div *ngIf="allReviews.length === 0" class="no-data">
+                            Aucun avis.
+                        </div>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </mat-card-content>
+    </mat-card>
+</div>

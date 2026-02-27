@@ -1,7 +1,7 @@
 <div class="management-container">
     <div class="management-header">
         <h1>Gestion des événements</h1>
-        <button mat-flat-button color="accent">
+        <button mat-flat-button color="accent" (click)="openEventDialog()">
             <mat-icon>event</mat-icon> Créer un événement
         </button>
     </div>
@@ -35,10 +35,10 @@
             <ng-container matColumnDef="actions">
                 <th mat-header-cell *matHeaderCellDef>Actions</th>
                 <td mat-cell *matCellDef="let element">
-                    <button mat-icon-button color="primary">
+                    <button mat-icon-button color="primary" (click)="openEventDialog(element)">
                         <mat-icon>edit</mat-icon>
                     </button>
-                    <button mat-icon-button color="warn">
+                    <button mat-icon-button color="warn" (click)="deleteEvent(element)">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </td>
