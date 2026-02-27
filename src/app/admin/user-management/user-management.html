@@ -1,0 +1,111 @@
+<div class="management-outer">
+    <!-- Action Bar -->
+    <div class="action-bar-premium">
+        <div class="search-box-pill">
+            <mat-icon>search</mat-icon>
+            <input type="text" placeholder="Rechercher un utilisateur..." (input)="onSearch($event)">
+            <div class="filter-trigger">
+                <mat-icon>tune</mat-icon>
+            </div>
+        </div>
+
+        <div class="filter-pills">
+            <button class="pill" [class.active]="selectedFilter === 'Tous'" (click)="setFilter('Tous')">
+                Tous <span>{{ stats.all }}</span>
+            </button>
+            <button class="pill" [class.active]="selectedFilter === 'Actifs'" (click)="setFilter('Actifs')">
+                Actifs <span>{{ stats.active }}</span>
+            </button>
+            <button class="pill" [class.active]="selectedFilter === 'Suspendus'" (click)="setFilter('Suspendus')">
+                Suspendus <span>{{ stats.suspended }}</span>
+            </button>
+            <button class="pill" [class.active]="selectedFilter === 'Admins'" (click)="setFilter('Admins')">
+                Admins <span>{{ stats.admins }}</span>
+            </button>
+        </div>
+
+        <div class="spacer"></div>
+
+        <button mat-flat-button class="create-btn-premium" (click)="openUserDialog()">
+            Créer <mat-icon>add</mat-icon>
+        </button>
+    </div>
+
+    <!-- Main Table Container -->
+    <mat-card class="table-card-premium">
+        <table mat-table [dataSource]="dataSource">
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Utilisateur </th>
+                <td mat-cell *matCellDef="let user">
+                    <div class="user-cell">
+                        <img [src]="'https://ui-avatars.com/api/?name='+user.name+'&background=random'"
+                            class="user-avatar-small">
+                        <div class="user-meta">
+                            <span class="name">{{ user.name }}</span>
+                            <span class="id">ID: 1928{{ user.status }}9210</span>
+                        </div>
+                    </div>
+                </td>
+            </ng-container>
+
+            <!-- Email Column -->
+            <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef> Contact </th>
+                <td mat-cell *matCellDef="let user">
+                    <span class="email-text">{{ user.email }}</span>
+                </td>
+            </ng-container>
+
+            <!-- Profile Column -->
+            <ng-container matColumnDef="profile">
+                <th mat-header-cell *matHeaderCellDef> Rôle </th>
+                <td mat-cell *matCellDef="let user">
+                    <span class="role-tag" [class]="user.profile?.toLowerCase()">
+                        {{ user.profile }}
+                    </span>
+                </td>
+            </ng-container>
+
+            <!-- Status Column -->
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef> Statut </th>
+                <td mat-cell *matCellDef="let user">
+                    <div class="status-pill-box">
+                        <span class="status-dot-mini" [class]="user.status === 1 ? 'active' : 'suspended'"></span>
+                        <span class="status-text">{{ user.status === 1 ? 'Actif' : 'Suspendu' }}</span>
+                    </div>
+                </td>
+            </ng-container>
+
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> </th>
+                <td mat-cell *matCellDef="let user">
+                    <div class="action-menu-pro" *ngIf="user.profile !== 'ADMIN'">
+                        <button mat-icon-button class="mini-action-btn" [class.suspend]="user.status === 1"
+                            (click)="user.status === 1 ? suspendUser(user._id) : activateUser(user._id)">
+                            <mat-icon>{{ user.status === 1 ? 'block' : 'check_circle' }}</mat-icon>
+                        </button>
+                        <button mat-icon-button class="mini-action-btn" (click)="openUserDialog(user)"
+                            matTooltip="Modifier">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-icon-button class="mini-action-btn delete-icon" (click)="deleteUser(user)"
+                            matTooltip="Supprimer">
+                            <mat-icon style="color: #ef4444;">delete</mat-icon>
+                        </button>
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="premium-row"></tr>
+        </table>
+
+        <div *ngIf="dataSource.data.length === 0" class="empty-state">
+            <mat-icon>group_off</mat-icon>
+            <p>Aucun membre trouvé dans cette section.</p>
+        </div>
+    </mat-card>
+</div>

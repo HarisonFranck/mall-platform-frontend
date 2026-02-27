@@ -5,7 +5,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
     selector: 'app-register',
@@ -27,7 +28,7 @@ export class Register {
     hidePassword = signal(true);
     hideConfirmPassword = signal(true);
 
-    constructor(private fb: FormBuilder) {
+    constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
         this.registerForm = this.fb.group({
             name: ['', Validators.required],
             email: ['', [Validators.required, Validators.email]],
@@ -51,7 +52,17 @@ export class Register {
 
     onSubmit() {
         if (this.registerForm.valid) {
-            console.log('Logique d\'inscription ici', this.registerForm.value);
+            const { name, email, password } = this.registerForm.value;
+            this.authService.registerCustomer({ name, email, password }).subscribe({
+                next: (res) => {
+                    console.log('Inscription réussie', res);
+                    this.router.navigate(['/client/home']);
+                },
+                error: (err) => {
+                    console.error('Erreur d\'inscription', err);
+                    alert('Erreur: ' + (err.error?.message || err.message));
+                }
+            });
         }
     }
 }

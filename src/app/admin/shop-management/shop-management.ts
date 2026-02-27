@@ -1,10 +1,15 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, Inject, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { AdminService } from '../../core/services/admin.service';
+import { ShopDialog } from './shop-dialog';
+import { ConfirmDialog } from '../../shared/components/confirm-dialog';
 
 @Component({
     selector: 'app-shop-management',
@@ -16,16 +21,126 @@ import { MatChipsModule } from '@angular/material/chips';
         MatButtonModule,
         MatIconModule,
         MatChipsModule,
+        MatDialogModule,
+        MatSnackBarModule
     ],
     templateUrl: './shop-management.html',
     styleUrl: './shop-management.css',
 })
-export class ShopManagement {
+export class ShopManagement implements OnInit {
     displayedColumns: string[] = ['name', 'category', 'location', 'status', 'actions'];
-    dataSource = [
-        { name: 'Fashion Hub', category: 'Vêtements', location: 'Étage 1', status: 'Ouvert' },
-        { name: 'Tech Store', category: 'Électronique', location: 'Étage 2', status: 'Ouvert' },
-        { name: 'Gourmet World', category: 'Alimentation', location: 'RdC', status: 'Fermé' },
-        { name: 'Beauty Zone', category: 'Cosmétiques', location: 'Étage 1', status: 'Ouvert' },
-    ];
+    allShops: any[] = [];
+    dataSource = new MatTableDataSource<any>([]);
+    categories: any[] = [];
+    selectedCategory: string = 'Toutes';
+
+    constructor(
+        private adminService: AdminService,
+        private dialog: MatDialog,
+        private snackBar: MatSnackBar,
+        private cdr: ChangeDetectorRef,
+        @Inject(PLATFORM_ID) private platformId: Object
+    ) { }
+
+    ngOnInit() {
+        if (isPlatformBrowser(this.platformId)) {
+            this.loadCategories();
+            this.loadShops();
+        }
+    }
+
+    loadCategories() {
+        this.adminService.getAllCategories().subscribe({
+            next: (cats) => this.categories = cats,
+            error: (err) => console.error('Erreur chargement catégories', err)
+        });
+    }
+
+    loadShops() {
+        this.adminService.getAllShops().subscribe({
+            next: (shops) => {
+                console.log('Boutiques récupérées:', shops.length);
+                this.allShops = shops.map((s: any) => ({
+                    _id: s._id,
+                    name: s.name,
+                    category: s.idCategory?.name || 'Non catégorisé',
+                    location: s.location || 'N/A',
+                    status: s.status === 1 ? 'Ouvert' : 'Fermé'
+                }));
+                this.applyFilter();
+                this.cdr.detectChanges();
+            },
+            error: (err) => {
+                console.error('Erreur chargement boutiques', err);
+                if (err.status === 401) {
+                    this.snackBar.open('Session expirée, veuillez vous reconnecter', 'OK', { duration: 5000 });
+                } else {
+                    this.snackBar.open('Erreur de chargement des boutiques', 'Fermer', { duration: 3000 });
+                }
+            }
+        });
+    }
+
+    applyFilter() {
+        if (this.selectedCategory === 'Toutes') {
+            this.dataSource.data = [...this.allShops];
+        } else {
+            this.dataSource.data = this.allShops.filter(s => s.category === this.selectedCategory);
+        }
+    }
+
+    filterByCategory(category: string) {
+        this.selectedCategory = category;
+        this.applyFilter();
+    }
+
+    openShopDialog(shop?: any) {
+        const dialogRef = this.dialog.open(ShopDialog, {
+            panelClass: ['large-dialog', 'premium-dialog-surface'],
+            data: shop || {}
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                if (shop?._id) {
+                    this.adminService.updateShop(shop._id, result).subscribe({
+                        next: () => {
+                            this.snackBar.open('Boutique mise à jour !', '', { duration: 2000 });
+                            this.loadShops();
+                        },
+                        error: () => this.snackBar.open('Erreur de mise à jour', 'Fermer')
+                    });
+                } else {
+                    this.adminService.createShop(result).subscribe({
+                        next: () => {
+                            this.snackBar.open('Boutique créée !', '', { duration: 2000 });
+                            this.loadShops();
+                        },
+                        error: () => this.snackBar.open('Erreur de création', 'Fermer')
+                    });
+                }
+            }
+        });
+    }
+
+    deleteShop(shop: any) {
+        const dialogRef = this.dialog.open(ConfirmDialog, {
+            data: {
+                message: 'Supprimer cette boutique ?',
+                targetName: shop.name
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(confirmed => {
+            if (confirmed) {
+                this.adminService.deleteShop(shop._id).subscribe({
+                    next: () => {
+                        this.snackBar.open('Boutique supprimée', '', { duration: 2000 });
+                        this.loadShops();
+                    },
+                    error: () => this.snackBar.open('Erreur de suppression', 'Fermer')
+                });
+            }
+        });
+    }
 }

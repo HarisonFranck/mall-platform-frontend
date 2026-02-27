@@ -1,49 +1,67 @@
 .login-container {
-    height: 100vh;
+    min-height: 100vh;
+    padding: 24px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, #f0f7ff 0%, #e0efff 100%);
-    font-family: 'Roboto', sans-serif;
+    background: radial-gradient(circle at top left, #eef2ff 0%, #f9fafb 50%, #e0e7ff 100%);
 }
 
 .login-card {
-    background: white;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 48px;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: var(--shadow-lg);
     width: 100%;
-    max-width: 420px;
+    max-width: 440px;
+    margin: auto;
     display: flex;
     flex-direction: column;
+    animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .login-brand {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 32px;
+    margin-bottom: 40px;
 }
 
 .brand-icon {
-    font-size: 48px;
-    width: 48px;
-    height: 48px;
-    color: var(--mat-sys-primary);
-    margin-bottom: 12px;
+    font-size: 56px;
+    width: 56px;
+    height: 56px;
+    color: var(--primary);
+    margin-bottom: 16px;
 }
 
 .login-brand h1 {
     margin: 0;
-    font-size: 24px;
-    font-weight: 500;
-    color: #1a1a1a;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text-main);
+    letter-spacing: -0.5px;
 }
 
 .login-form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 20px;
 }
 
 .full-width {
@@ -54,112 +72,131 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
+    margin: 4px 0;
 }
 
 .forgot-password {
-    color: var(--mat-sys-primary);
+    color: var(--primary);
     text-decoration: none;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .forgot-password:hover {
+    color: var(--primary-hover);
     text-decoration: underline;
 }
 
 .submit-button {
-    height: 48px;
-    font-size: 16px;
-    font-weight: 500;
-    border-radius: 8px;
-    margin-top: 8px;
+    height: 56px !important;
+    font-size: 17px !important;
+    font-weight: 600 !important;
+    border-radius: 12px !important;
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
 }
 
 .divider {
     display: flex;
     align-items: center;
     text-align: center;
-    margin: 24px 0;
-    color: #888;
-    font-size: 14px;
+    margin: 28px 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .divider::before,
 .divider::after {
     content: '';
     flex: 1;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--border);
 }
 
 .divider:not(:empty)::before {
-    margin-right: 12px;
+    margin-right: 16px;
 }
 
 .divider:not(:empty)::after {
-    margin-left: 12px;
+    margin-left: 16px;
 }
 
 .social-logins {
     display: flex;
-    gap: 12px;
+    gap: 16px;
 }
 
 .social-button {
     flex: 1;
-    height: 44px;
-    border-radius: 8px;
-    display: flex;
+    height: 52px !important;
+    border-radius: 12px !important;
+    display: flex !important;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 12px;
+    font-weight: 600 !important;
+    border-color: var(--border) !important;
 }
 
 .social-button img {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
 }
 
 .shortcut-accounts {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
 }
 
 .shortcut-accounts button {
-    height: 40px;
-    justify-content: flex-start;
+    height: 48px !important;
+    justify-content: flex-start !important;
     text-align: left;
-    border-radius: 6px;
+    border-radius: 10px !important;
+    padding: 0 16px !important;
 }
 
 .shortcut-accounts mat-icon {
-    margin-right: 8px;
+    margin-right: 12px;
 }
 
 .login-footer {
-    margin-top: 32px;
+    margin-top: 40px;
     text-align: center;
-    font-size: 14px;
-    color: #666;
+    font-size: 15px;
+    color: var(--text-muted);
 }
 
 .login-footer a {
-    color: var(--mat-sys-primary);
+    color: var(--primary);
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .login-footer a:hover {
+    color: var(--primary-hover);
     text-decoration: underline;
 }
 
 @media (max-width: 480px) {
+    .login-container {
+        padding: 0;
+    }
+
     .login-card {
-        padding: 24px;
+        padding: 32px 24px;
         box-shadow: none;
         border-radius: 0;
-        height: 100vh;
+        min-height: 100vh;
+        max-width: 100%;
+        background: white;
+        margin: 0;
         justify-content: center;
     }
 }

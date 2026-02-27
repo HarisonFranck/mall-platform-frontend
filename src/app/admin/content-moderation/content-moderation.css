@@ -1,0 +1,35 @@
+.moderation-container {
+    padding: 24px;
+}
+
+.header-actions {
+    margin-bottom: 24px;
+}
+
+.header-actions h1 {
+    margin: 0;
+    color: #333;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.tab-content {
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+}
+
+.comment-text {
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.no-data {
+    text-align: center;
+    padding: 32px;
+    color: #757575;
+}

@@ -1,54 +1,88 @@
-<div class="management-container">
-    <div class="management-header">
-        <h1>Gestion des boutiques</h1>
-        <button mat-flat-button color="primary">
-            <mat-icon>add</mat-icon> Ajouter une boutique
+<div class="management-outer">
+    <!-- Action Bar -->
+    <div class="action-bar-premium">
+        <div class="search-box-pill">
+            <mat-icon>search</mat-icon>
+            <input type="text" placeholder="Rechercher une boutique...">
+        </div>
+
+        <div class="filter-pills">
+            <button class="pill" [class.active]="selectedCategory === 'Toutes'"
+                (click)="filterByCategory('Toutes')">Toutes</button>
+            <button class="pill" *ngFor="let cat of categories" [class.active]="selectedCategory === cat.name"
+                (click)="filterByCategory(cat.name)">
+                {{ cat.name }}
+            </button>
+        </div>
+
+        <div class="spacer"></div>
+
+        <button mat-flat-button class="create-btn-premium" (click)="openShopDialog()">
+            <mat-icon>add</mat-icon> Ajouter
         </button>
     </div>
 
-    <mat-card class="table-card">
+    <mat-card class="table-card-premium">
         <table mat-table [dataSource]="dataSource" class="full-width-table">
             <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef>Nom</th>
-                <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+                <th mat-header-cell *matHeaderCellDef>Boutique</th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="user-cell">
+                        <div class="logo-placeholder">{{ element.name.charAt(0) }}</div>
+                        <div class="user-meta">
+                            <span class="name">{{ element.name }}</span>
+                            <span class="id">{{ element.location }}</span>
+                        </div>
+                    </div>
+                </td>
             </ng-container>
 
             <ng-container matColumnDef="category">
                 <th mat-header-cell *matHeaderCellDef>Catégorie</th>
-                <td mat-cell *matCellDef="let element">{{ element.category }}</td>
+                <td mat-cell *matCellDef="let element">
+                    <span class="role-tag customer">{{ element.category }}</span>
+                </td>
             </ng-container>
 
             <ng-container matColumnDef="location">
-                <th mat-header-cell *matHeaderCellDef>Emplacement</th>
-                <td mat-cell *matCellDef="let element">{{ element.location }}</td>
+                <th mat-header-cell *matHeaderCellDef>Zone</th>
+                <td mat-cell *matCellDef="let element">
+                    <span class="email-text">{{ element.location }}</span>
+                </td>
             </ng-container>
 
             <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef>Statut</th>
+                <th mat-header-cell *matHeaderCellDef>État</th>
                 <td mat-cell *matCellDef="let element">
-                    <mat-chip-set>
-                        <mat-chip [class.status-open]="element.status === 'Ouvert'"
-                            [class.status-closed]="element.status === 'Fermé'">
-                            {{ element.status }}
-                        </mat-chip>
-                    </mat-chip-set>
+                    <div class="status-pill-box">
+                        <span class="status-dot-mini" [class.active]="element.status === 'Ouvert'"></span>
+                        <span class="status-text">{{ element.status }}</span>
+                    </div>
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <th mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell *matCellDef="let element">
-                    <button mat-icon-button color="primary">
-                        <mat-icon>edit</mat-icon>
-                    </button>
-                    <button mat-icon-button color="warn">
-                        <mat-icon>delete</mat-icon>
-                    </button>
+                    <div class="action-menu-pro">
+                        <button mat-icon-button class="mini-action-btn" (click)="openShopDialog(element)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn" class="mini-action-btn" (click)="deleteShop(element)"
+                            matTooltip="Supprimer">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
                 </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="premium-row"></tr>
         </table>
+
+        <div *ngIf="dataSource.data.length === 0" class="empty-state">
+            <mat-icon>store</mat-icon>
+            <p>Aucune boutique n'est enregistrée pour le moment.</p>
+        </div>
     </mat-card>
 </div>

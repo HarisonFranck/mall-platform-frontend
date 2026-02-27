@@ -1,49 +1,131 @@
 <mat-sidenav-container class="admin-container">
-    <mat-sidenav #sidenav mode="side" [opened]="isSidenavOpen" class="admin-sidenav">
+    <mat-sidenav #sidenav mode="side" [opened]="true" class="admin-sidenav" [class.collapsed]="!isSidenavOpen">
         <div class="sidenav-header">
-            <mat-icon class="brand-icon">shopping_bag</mat-icon>
-            <span>Mall Admin</span>
+            <div class="logo-circle">
+                <mat-icon>hub</mat-icon>
+            </div>
+            <span class="sidenav-text">Mall Platform</span>
         </div>
 
-        <mat-nav-list>
-            <a mat-list-item routerLink="/admin/dashboard" routerLinkActive="active-link">
+        <mat-nav-list class="nav-list-premium">
+            <a mat-list-item routerLink="/admin/dashboard" routerLinkActive="active-link" title="Dashboard">
                 <mat-icon matListItemIcon>dashboard</mat-icon>
-                <span matListItemTitle>Tableau de bord</span>
+                <span matListItemTitle class="sidenav-text">Dashboard</span>
             </a>
-            <a mat-list-item routerLink="/admin/shops" routerLinkActive="active-link">
-                <mat-icon matListItemIcon>store</mat-icon>
-                <span matListItemTitle>Gestion des boutiques</span>
+            <a mat-list-item routerLink="/admin/shops" routerLinkActive="active-link" title="Boutiques">
+                <mat-icon matListItemIcon>storefront</mat-icon>
+                <span matListItemTitle class="sidenav-text">Boutiques</span>
             </a>
-            <a mat-list-item routerLink="/admin/events" routerLinkActive="active-link">
-                <mat-icon matListItemIcon>event</mat-icon>
-                <span matListItemTitle>Gestion des événements</span>
+            <a mat-list-item routerLink="/admin/users" routerLinkActive="active-link" title="Utilisateurs">
+                <mat-icon matListItemIcon>group</mat-icon>
+                <span matListItemTitle class="sidenav-text">Utilisateurs</span>
+            </a>
+            <a mat-list-item routerLink="/admin/events" routerLinkActive="active-link" title="Événements">
+                <mat-icon matListItemIcon>event_note</mat-icon>
+                <span matListItemTitle class="sidenav-text">Événements</span>
+            </a>
+            <a mat-list-item routerLink="/admin/content" routerLinkActive="active-link" title="Modération">
+                <mat-icon matListItemIcon>security</mat-icon>
+                <span matListItemTitle class="sidenav-text">Modération</span>
             </a>
         </mat-nav-list>
 
         <div class="sidenav-footer">
-            <a mat-list-item routerLink="/auth/login">
-                <mat-icon matListItemIcon>logout</mat-icon>
-                <span matListItemTitle>Déconnexion</span>
-            </a>
+            <button mat-flat-button class="logout-btn-premium" routerLink="/auth/login" title="Déconnexion">
+                <mat-icon>logout</mat-icon>
+                <span class="sidenav-text" style="margin-left: 12px;">Déconnexion</span>
+            </button>
         </div>
     </mat-sidenav>
 
-    <mat-sidenav-content class="admin-content">
-        <mat-toolbar color="primary" class="admin-toolbar">
-            <button mat-icon-button (click)="toggleSidenav()">
+    <mat-sidenav-content class="admin-content" [class.content-expanded]="!isSidenavOpen">
+        <!-- Persistent Toolbar -->
+        <mat-toolbar class="admin-toolbar">
+            <button mat-icon-button (click)="toggleSidenav()" class="menu-toggle">
                 <mat-icon>menu</mat-icon>
             </button>
-            <span>Mall Platform - Administration</span>
+
+            <div class="toolbar-search">
+                <mat-icon class="search-icon">search</mat-icon>
+                <input type="text" placeholder="Rechercher...">
+            </div>
+
             <span class="toolbar-spacer"></span>
-            <button mat-icon-button>
-                <mat-icon>notifications</mat-icon>
+
+            <button mat-icon-button class="toolbar-btn">
+                <mat-icon>notifications_none</mat-icon>
+                <div class="notification-dot"></div>
             </button>
-            <button mat-icon-button>
-                <mat-icon>account_circle</mat-icon>
-            </button>
+
+            <div class="user-profile-pill">
+                <img src="https://ui-avatars.com/api/?name=Admin&background=0ca678&color=fff" alt="Avatar"
+                    class="profile-avatar">
+                <div class="user-info sidenav-text">
+                    <span class="name">Admin User</span>
+                    <span class="role">Directeur Mall</span>
+                </div>
+            </div>
         </mat-toolbar>
 
-        <main class="page-container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="hero-banner">
+                <img [src]="currentContext.bannerUrl" alt="Cover" class="banner-img">
+                <div class="banner-overlay"></div>
+            </div>
+
+            <div class="hero-content">
+                <div class="hero-breadcrumbs">
+                    <ng-container *ngFor="let crumb of breadcrumbs; let last = last">
+                        <a [routerLink]="crumb.link">{{ crumb.label }}</a>
+                        <mat-icon *ngIf="!last">chevron_right</mat-icon>
+                    </ng-container>
+                </div>
+
+                <mat-card class="context-card">
+                    <div class="context-header">
+                        <div class="context-title-group">
+                            <h2>{{ currentContext.title }}</h2>
+                            <div class="badge-row">
+                                <span class="badge development">{{ currentContext.status }}</span>
+                                <span class="badge detail">Mall Platform</span>
+                                <span class="id-tag">ID: {{ currentContext.id }}</span>
+                            </div>
+                        </div>
+                        <button mat-button class="edit-btn" (click)="openSettingsDialog()">
+                            <mat-icon>edit</mat-icon> Modifier
+                        </button>
+                    </div>
+
+                    <div class="context-grid">
+                        <div class="grid-item">
+                            <span class="label">RÉGION</span>
+                            <span class="value">{{ currentContext.location }}</span>
+                        </div>
+                        <div class="grid-item">
+                            <span class="label">MÉTHODOLOGIE</span>
+                            <span class="value">Gestion Centrale</span>
+                        </div>
+                        <div class="grid-item">
+                            <span class="label">VERSION</span>
+                            <span class="value">2.4.0-pro</span>
+                        </div>
+                    </div>
+                </mat-card>
+            </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <nav class="tabs-nav">
+            <div class="tabs-container">
+                <a *ngFor="let tab of tabs" [routerLink]="tab.link" routerLinkActive="active-tab" class="tab-link">
+                    {{ tab.label }}
+                </a>
+            </div>
+        </nav>
+
+        <!-- Dynamic Content -->
+        <main class="page-content">
             <router-outlet></router-outlet>
         </main>
     </mat-sidenav-content>

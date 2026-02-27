@@ -1,68 +1,130 @@
-<div class="dashboard-container">
-    <div class="dashboard-header">
-        <h1>Tableau de bord</h1>
-        <p>Bienvenue dans votre centre de gestion du centre commercial.</p>
+<div class="dashboard-page">
+    <!-- Stats Row (Overview) -->
+    <div class="overview-stats">
+        <div class="stat-mini-card" *ngFor="let stat of stats">
+            <div class="stat-icon-small" [style.background-color]="stat.color + '15'">
+                <mat-icon [style.color]="stat.color">{{ stat.icon }}</mat-icon>
+            </div>
+            <div class="stat-details">
+                <span class="label">{{ stat.title }}</span>
+                <span class="value">{{ stat.value }}</span>
+            </div>
+        </div>
     </div>
 
-    <div class="stats-grid">
-        <mat-card *ngFor="let stat of stats" class="stat-card">
-            <mat-card-content>
-                <div class="stat-content">
-                    <div class="stat-info">
-                        <span class="stat-label">{{ stat.label }}</span>
-                        <span class="stat-value">{{ stat.value }}</span>
+    <!-- Main Grid -->
+    <div class="dashboard-main-grid">
+        <!-- Left Column: Primary Content -->
+        <div class="primary-column">
+            <!-- Performance Chart Card -->
+            <mat-card class="premium-chart-card">
+                <mat-card-header>
+                    <mat-card-title>Performance Globale</mat-card-title>
+                    <mat-card-subtitle>Analyse du trafic et des interactions (7 derniers jours)</mat-card-subtitle>
+                    <div class="header-actions">
+                        <button mat-button class="period-btn">Semaine <mat-icon>expand_more</mat-icon></button>
                     </div>
-                    <div class="stat-icon-wrapper" [style.background-color]="stat.color + '20'">
-                        <mat-icon [style.color]="stat.color">{{ stat.icon }}</mat-icon>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="mock-line-chart">
+                        <div class="chart-axis-y">
+                            <span>100</span><span>75</span><span>50</span><span>25</span><span>0</span>
+                        </div>
+                        <div class="chart-bars-container">
+                            <div *ngFor="let val of performanceData" class="chart-bar-wrapper">
+                                <div class="chart-bar" [style.height.%]="val">
+                                    <div class="bar-tooltip">{{ val }}%</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </mat-card-content>
-        </mat-card>
-    </div>
+                    <div class="chart-labels-x">
+                        <span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span><span>Dim</span>
+                    </div>
+                </mat-card-content>
+            </mat-card>
 
-    <div class="dashboard-sections">
-        <mat-card class="recent-activities">
-            <mat-card-header>
-                <mat-card-title>Activités récentes</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-                <mat-list>
-                    <mat-list-item>
-                        <mat-icon matListItemIcon color="primary">add_business</mat-icon>
-                        <div matListItemTitle>Nouvelle boutique : "L'Artisan Boulanger"</div>
-                        <div matListItemLine>Il y a 2 heures</div>
-                    </mat-list-item>
-                    <mat-divider></mat-divider>
-                    <mat-list-item>
-                        <mat-icon matListItemIcon color="accent">event_note</mat-icon>
-                        <div matListItemTitle>Événement mis à jour : "Soldes d'été"</div>
-                        <div matListItemLine>Hier à 16:45</div>
-                    </mat-list-item>
-                    <mat-divider></mat-divider>
-                    <mat-list-item>
-                        <mat-icon matListItemIcon color="warn">report_problem</mat-icon>
-                        <div matListItemTitle>Maintenance prévue : Parking Zone B</div>
-                        <div matListItemLine>20 Février 2026</div>
-                    </mat-list-item>
-                </mat-list>
-            </mat-card-content>
-        </mat-card>
+            <!-- Secondary Row -->
+            <div class="secondary-content-row">
+                <!-- Activity Feed -->
+                <mat-card class="feed-card">
+                    <mat-card-header>
+                        <mat-card-title>Flux d'activités</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div class="activity-timeline">
+                            <div class="timeline-item">
+                                <div class="dot success"></div>
+                                <div class="content">
+                                    <p><strong>L'Artisan Boulanger</strong> a été activé</p>
+                                    <span>Il y a 2h • Par Admin</span>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="dot primary"></div>
+                                <div class="content">
+                                    <p>Nouvelle offre validée : <strong>Soldes d'été</strong></p>
+                                    <span>Il y a 5h • Zara</span>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="dot warning"></div>
+                                <div class="content">
+                                    <p>Maintenance prévue : <strong>Parking B</strong></p>
+                                    <span>Demain • Services Techniques</span>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
 
-        <mat-card class="quick-actions">
-            <mat-card-header>
-                <mat-card-title>Actions rapides</mat-card-title>
-            </mat-card-header>
-            <mat-card-content class="actions-content">
-                <button mat-flat-button color="primary" class="action-btn">
-                    <mat-icon>add</mat-icon> Ajouter une boutique
+        <!-- Right Column: Insights & Actions -->
+        <div class="insights-column">
+            <!-- Category Distribution (Doughnut Mock) -->
+            <mat-card class="insights-card">
+                <mat-card-header>
+                    <mat-card-title>Répartition des Boutiques</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="mock-doughnut-container">
+                        <div class="doughnut-circle">
+                            <div class="center-text">
+                                <span class="num">{{ stats[0]?.value || '0' }}</span>
+                                <span class="lab">Total</span>
+                            </div>
+                        </div>
+                        <div class="doughnut-legend">
+                            <div *ngFor="let cat of categoriesData" class="legend-item">
+                                <div class="legend-dot" [style.background-color]="cat.color"></div>
+                                <span class="legend-label">{{ cat.label }}</span>
+                                <span class="legend-value">{{ cat.value }}%</span>
+                            </div>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+            <!-- Quick Actions -->
+            <div class="shortcut-grid">
+                <button mat-ripple class="shortcut-btn" routerLink="/admin/shops">
+                    <mat-icon>add_business</mat-icon>
+                    <span>Ajouter Boutique</span>
                 </button>
-                <button mat-flat-button color="accent" class="action-btn">
-                    <mat-icon>event</mat-icon> Créer un événement
+                <button mat-ripple class="shortcut-btn" routerLink="/admin/events">
+                    <mat-icon>event_available</mat-icon>
+                    <span>Créer Événement</span>
                 </button>
-                <button mat-flat-button class="action-btn">
-                    <mat-icon>description</mat-icon> Générer un rapport
+                <button mat-ripple class="shortcut-btn" (click)="exportPDF()">
+                    <mat-icon>assessment</mat-icon>
+                    <span>Rapport PDF</span>
                 </button>
-            </mat-card-content>
-        </mat-card>
+                <button mat-ripple class="shortcut-btn">
+                    <mat-icon>settings</mat-icon>
+                    <span>Paramètres</span>
+                </button>
+            </div>
+        </div>
     </div>
 </div>
